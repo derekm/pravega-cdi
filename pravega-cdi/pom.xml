@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.pravega</groupId>
+    <artifactId>pravega-cdi-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>pravega-cdi</artifactId>
+  <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.12</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/jakarta.enterprise/jakarta.enterprise.cdi-api -->
+    <dependency>
+      <groupId>jakarta.enterprise</groupId>
+      <artifactId>jakarta.enterprise.cdi-api</artifactId>
+      <version>2.0.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.pravega/pravega-client -->
+    <dependency>
+      <groupId>io.pravega</groupId>
+      <artifactId>pravega-client</artifactId>
+      <version>0.7.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.jboss.weld/weld-junit5 -->
+    <dependency>
+        <groupId>org.jboss.weld</groupId>
+        <artifactId>weld-junit5</artifactId>
+        <version>2.0.1.Final</version>
+        <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.pravega/pravega-standalone -->
+    <dependency>
+      <groupId>io.pravega</groupId>
+      <artifactId>pravega-standalone</artifactId>
+      <version>0.7.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.pravega/pravega-test-testcommon -->
+    <dependency>
+      <groupId>io.pravega</groupId>
+      <artifactId>pravega-test-testcommon</artifactId>
+      <version>0.7.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- NOTE: pravega-standalone's protobuf-java 2.5.0 from hadoop omits pravega-client's protobuf-java 3.5.1 -->
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>3.6.1</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+</project>
