@@ -25,7 +25,7 @@ import io.grpc.StatusRuntimeException;
 import io.pravega.client.stream.EventStreamReader;
 import io.pravega.client.stream.EventStreamWriter;
 import io.pravega.client.stream.impl.ByteArraySerializer;
-import io.pravega.client.stream.impl.JavaSerializer;
+import io.pravega.client.stream.impl.UTF8StringSerializer;
 import io.pravega.local.LocalPravegaEmulator;
 import io.pravega.test.common.TestUtils;
 
@@ -87,22 +87,18 @@ public class EventStreamProducersTest {
 
     /*
      * TEST WRITING AND READING USING STRINGS
-     *
-     * NOTE THE NEED TO WRAP JavaSerializer<String>
      */
-
-    public static class JavaStringSerializer extends JavaSerializer<String> {};
 
     @Inject
     @PravegaConfig(scope = "streams",
                    stream = "test-string",
-                   serializer = JavaStringSerializer.class)
+                   serializer = UTF8StringSerializer.class)
     Instance<EventStreamWriter<String>> eventStreamWriterStringInstance;
 
     @Inject
     @PravegaConfig(scope = "streams",
                    stream = "test-string",
-                   serializer = JavaStringSerializer.class)
+                   serializer = UTF8StringSerializer.class)
     Instance<EventStreamReader<String>> eventStreamReaderStringInstance;
 
     @Test
