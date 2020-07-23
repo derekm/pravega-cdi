@@ -6,25 +6,30 @@ import io.pravega.client.stream.Serializer;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 
-@SuppressWarnings("serial")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder
 public class PravegaConfigQualifier extends AnnotationLiteral<PravegaConfig> implements PravegaConfig {
+    private static final long serialVersionUID = 1L;
+
     @Builder.Default
     String controllerURI = "tcp://localhost:9090";
 
+    @NonNull
     String scope;
 
     @Builder.Default
     boolean createScope = true;
 
+    @NonNull
     String stream;
 
     @Builder.Default
     boolean createStream = true;
 
+    @NonNull
     Class<? extends Serializer<?>> serializer;
 
     boolean automaticallyNoteTime;
@@ -59,33 +64,27 @@ public class PravegaConfigQualifier extends AnnotationLiteral<PravegaConfig> imp
     }
     @Override
     public int initialBackoffMillis() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 1;
     }
     @Override
     public int maxBackoffMillis() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 20000;
     }
     @Override
     public int retryAttempts() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 10;
     }
     @Override
     public int backoffMultiple() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 10;
     }
     @Override
     public boolean enableConnectionPooling() {
-        // TODO Auto-generated method stub
         return false;
     }
     @Override
     public long transactionTimeoutTime() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 90 * 1000 - 1;
     }
 
 }

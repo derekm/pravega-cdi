@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 import org.jboss.weld.junit5.WeldInitiator;
@@ -148,6 +149,18 @@ public class EventStreamProducersTest {
     public void nonExistentScopeWithoutScopeButWithStreamCreationFailsDifferently() {
         RuntimeException ex = assertThrows(IllegalArgumentException.class, () -> noScopeWithStreamWriterInstance.get());
         assertTrue("Exception message doesn't start with 'Scope does not exist'", ex.getMessage().startsWith("Scope does not exist"));
+    }
+
+    @Test
+    public void canUseAnnotationLiteralsToFetchClients() {
+        @SuppressWarnings("rawtypes")
+        Instance<EventStreamWriter> writerInst = CDI.current().select(EventStreamWriter.class, PravegaConfigQualifier.builder()
+                .scope("streams")
+                .stream("test-select")
+                .serializer(UTF8StringSerializer.class)
+                .build());
+        @SuppressWarnings("unchecked")
+        EventStreamWriter<String> writer = writerInst.get();
     }
 
 }
