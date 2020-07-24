@@ -2,7 +2,6 @@ package io.pravega.cdi;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.concurrent.ExecutionException;
@@ -152,15 +151,30 @@ public class EventStreamProducersTest {
     }
 
     @Test
-    public void canUseAnnotationLiteralsToFetchClients() {
+    public void canUseAnnotationLiteralsToFetchClients() throws InterruptedException, ExecutionException {
         @SuppressWarnings("rawtypes")
         Instance<EventStreamWriter> writerInst = CDI.current().select(EventStreamWriter.class, PravegaConfigQualifier.builder()
                 .scope("streams")
                 .stream("test-select")
                 .serializer(UTF8StringSerializer.class)
                 .build());
+
+        final String expectHelloWorld = "Hello, world!";
         @SuppressWarnings("unchecked")
         EventStreamWriter<String> writer = writerInst.get();
+        writer.writeEvent(expectHelloWorld).get();
+
+        @SuppressWarnings("rawtypes")
+        Instance<EventStreamReader> readerInst = CDI.current().select(EventStreamReader.class, PravegaConfigQualifier.builder()
+                .scope("streams")
+                .stream("test-select")
+                .serializer(UTF8StringSerializer.class)
+                .build());
+        @SuppressWarnings("unchecked")
+        EventStreamReader<String> reader = readerInst.get();
+
+        String string = reader.readNextEvent(1000).getEvent();
+        assertEquals(expectHelloWorld, string, "Message is not '" + expectHelloWorld + "'");
     }
 
 }
