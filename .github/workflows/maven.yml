@@ -32,3 +32,14 @@ jobs:
       uses: codecov/codecov-action@v1.0.12
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+    - run: |
+        echo "::set-env name=PR_NUMBER::$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"
+    - name: Coveralls Maven plugin
+      run: |
+        mvn coveralls:report \
+        --no-transfer-progress \
+        -D repoToken=${{ secrets.COVERALLS_TOKEN }} \
+        -D serviceName=Github \
+        -D serviceBuildUrl=https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks \
+        -D branch=${{ github.head_ref || github.ref }} \
+        -D pullRequest=$PR_NUMBER
