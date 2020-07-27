@@ -43,3 +43,11 @@ jobs:
         -D serviceBuildUrl=https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks \
         -D branch=${{ github.head_ref || github.ref }} \
         -D pullRequest=$PR_NUMBER
+    - name: Code Climate
+      uses: paambaati/codeclimate-action@v2.6.0
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
+        JACOCO_SOURCE_PATH: "${{ github.workspace }}/pravega-cdi/src/main/java"
+      with:
+        coverageCommand: "true"
+        coverageLocations: ${{ github.workspace }}/pravega-cdi/target/site/jacoco/jacoco.xml:jacoco
