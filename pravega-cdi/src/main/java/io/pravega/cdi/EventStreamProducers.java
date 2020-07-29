@@ -32,12 +32,8 @@ public class EventStreamProducers {
                    serializer = ByteArraySerializer.class /* parameter is non-binding, this dummy value is ignored */)
     public <T> EventStreamWriter<T> getNewEventStreamWriter(InjectionPoint ip) throws InstantiationException, IllegalAccessException {
 
-        PravegaConfig pravegaConfig = null;
-        if (ip.getAnnotated() != null) {
-            pravegaConfig = ip.getAnnotated().getAnnotation(PravegaConfig.class);
-        } else {
-            pravegaConfig = (PravegaConfig) ip.getQualifiers().parallelStream().filter(q -> q instanceof PravegaConfig).findAny().get();
-        }
+        PravegaConfig pravegaConfig = createPravegaConfigFromAnnotationOrLiteral(ip);
+
         URI controllerURI = URI.create(pravegaConfig.controllerURI());
 
         final StreamConfiguration streamConfig = createStreamConfiguration(pravegaConfig);
@@ -82,12 +78,8 @@ public class EventStreamProducers {
                    serializer = ByteArraySerializer.class /* parameter is non-binding, this dummy value is ignored */)
     public <T> EventStreamReader<T> getNewEventStreamReader(InjectionPoint ip) throws InstantiationException, IllegalAccessException {
 
-        PravegaConfig pravegaConfig = null;
-        if (ip.getAnnotated() != null) {
-            pravegaConfig = ip.getAnnotated().getAnnotation(PravegaConfig.class);
-        } else {
-            pravegaConfig = (PravegaConfig) ip.getQualifiers().parallelStream().filter(q -> q instanceof PravegaConfig).findAny().get();
-        }
+        PravegaConfig pravegaConfig = createPravegaConfigFromAnnotationOrLiteral(ip);
+
         URI controllerURI = URI.create(pravegaConfig.controllerURI());
 
         final StreamConfiguration streamConfig = createStreamConfiguration(pravegaConfig);
@@ -119,6 +111,14 @@ public class EventStreamProducers {
             EventStreamReader<?> eventStreamReader
     ) {
         eventStreamReader.close();
+    }
+
+    private PravegaConfig createPravegaConfigFromAnnotationOrLiteral(InjectionPoint ip) {
+        if (ip.getAnnotated() != null) {
+            return ip.getAnnotated().getAnnotation(PravegaConfig.class);
+        } else {
+            return (PravegaConfig) ip.getQualifiers().parallelStream().filter(q -> q instanceof PravegaConfig).findAny().get();
+        }
     }
 
     private StreamConfiguration createStreamConfiguration(PravegaConfig pravegaConfig) {
