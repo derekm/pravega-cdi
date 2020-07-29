@@ -40,7 +40,9 @@ public class EventStreamProducers {
         }
         URI controllerURI = URI.create(pravegaConfig.controllerURI());
 
-        createScopeAndStream(pravegaConfig, controllerURI);
+        final StreamConfiguration streamConfig = createStreamConfiguration(pravegaConfig);
+
+        createScopeAndStream(pravegaConfig, streamConfig, controllerURI);
 
         ClientConfig clientConfig = ClientConfig.builder().controllerURI(controllerURI).build();
         // controllerURI, credentials, trustStore, validateHostName, maxConnectionsPerSegmentStore,
@@ -88,7 +90,9 @@ public class EventStreamProducers {
         }
         URI controllerURI = URI.create(pravegaConfig.controllerURI());
 
-        createScopeAndStream(pravegaConfig, controllerURI);
+        final StreamConfiguration streamConfig = createStreamConfiguration(pravegaConfig);
+
+        createScopeAndStream(pravegaConfig, streamConfig, controllerURI);
 
         ClientConfig clientConfig = ClientConfig.builder().controllerURI(controllerURI).build();
         // controllerURI, credentials, trustStore, validateHostName, maxConnectionsPerSegmentStore,
@@ -117,12 +121,14 @@ public class EventStreamProducers {
         eventStreamReader.close();
     }
 
-    private void createScopeAndStream(PravegaConfig pravegaConfig, URI controllerURI) {
+    private StreamConfiguration createStreamConfiguration(PravegaConfig pravegaConfig) {
         // TODO FIXME support StreamConfiguration policies
-        final StreamConfiguration streamConfig = StreamConfiguration.builder()
+        return StreamConfiguration.builder()
                 .scalingPolicy(ScalingPolicy.fixed(1))
                 .build();
+    }
 
+    private void createScopeAndStream(PravegaConfig pravegaConfig, StreamConfiguration streamConfig, URI controllerURI) {
         if (pravegaConfig.createScope() || pravegaConfig.createStream()) {
             try (final StreamManager streamManager = StreamManager.create(controllerURI)) {
                 if (pravegaConfig.createScope()) {
