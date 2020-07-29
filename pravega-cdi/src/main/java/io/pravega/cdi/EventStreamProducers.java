@@ -131,13 +131,21 @@ public class EventStreamProducers {
     private void createScopeAndStream(PravegaConfig pravegaConfig, StreamConfiguration streamConfig, URI controllerURI) {
         if (pravegaConfig.createScope() || pravegaConfig.createStream()) {
             try (final StreamManager streamManager = StreamManager.create(controllerURI)) {
-                if (pravegaConfig.createScope()) {
-                    streamManager.createScope(pravegaConfig.scope());
-                }
-                if (pravegaConfig.createStream()) {
-                    streamManager.createStream(pravegaConfig.scope(), pravegaConfig.stream(), streamConfig);
-                }
+                createScope(pravegaConfig, streamManager);
+                createStream(pravegaConfig, streamManager, streamConfig);
             }
+        }
+    }
+
+    private void createScope(PravegaConfig pravegaConfig, StreamManager streamManager) {
+        if (pravegaConfig.createScope()) {
+            streamManager.createScope(pravegaConfig.scope());
+        }
+    }
+
+    private void createStream(PravegaConfig pravegaConfig, StreamManager streamManager, StreamConfiguration streamConfig) {
+        if (pravegaConfig.createStream()) {
+            streamManager.createStream(pravegaConfig.scope(), pravegaConfig.stream(), streamConfig);
         }
     }
 
