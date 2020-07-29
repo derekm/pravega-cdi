@@ -40,20 +40,7 @@ public class EventStreamProducers {
         }
         URI controllerURI = URI.create(pravegaConfig.controllerURI());
 
-        final StreamConfiguration streamConfig = StreamConfiguration.builder()
-                .scalingPolicy(ScalingPolicy.fixed(1))
-                .build();
-
-        if (pravegaConfig.createScope() || pravegaConfig.createStream()) {
-            try (final StreamManager streamManager = StreamManager.create(controllerURI)) {
-                if (pravegaConfig.createScope()) {
-                    streamManager.createScope(pravegaConfig.scope());                    
-                }
-                if (pravegaConfig.createStream()) {
-                    streamManager.createStream(pravegaConfig.scope(), pravegaConfig.stream(), streamConfig);                    
-                }
-            }
-        }
+        createScopeAndStream(pravegaConfig, controllerURI);
 
         ClientConfig clientConfig = ClientConfig.builder().controllerURI(controllerURI).build();
         // controllerURI, credentials, trustStore, validateHostName, maxConnectionsPerSegmentStore,
@@ -101,20 +88,7 @@ public class EventStreamProducers {
         }
         URI controllerURI = URI.create(pravegaConfig.controllerURI());
 
-        final StreamConfiguration streamConfig = StreamConfiguration.builder()
-                .scalingPolicy(ScalingPolicy.fixed(1))
-                .build();
-
-        if (pravegaConfig.createScope() || pravegaConfig.createStream()) {
-            try (final StreamManager streamManager = StreamManager.create(controllerURI)) {
-                if (pravegaConfig.createScope()) {
-                    streamManager.createScope(pravegaConfig.scope());                    
-                }
-                if (pravegaConfig.createStream()) {
-                    streamManager.createStream(pravegaConfig.scope(), pravegaConfig.stream(), streamConfig);                    
-                }
-            }
-        }
+        createScopeAndStream(pravegaConfig, controllerURI);
 
         ClientConfig clientConfig = ClientConfig.builder().controllerURI(controllerURI).build();
         // controllerURI, credentials, trustStore, validateHostName, maxConnectionsPerSegmentStore,
@@ -141,6 +115,24 @@ public class EventStreamProducers {
             EventStreamReader<?> eventStreamReader
     ) {
         eventStreamReader.close();
+    }
+
+    private void createScopeAndStream(PravegaConfig pravegaConfig, URI controllerURI) {
+        // TODO FIXME support StreamConfiguration policies
+        final StreamConfiguration streamConfig = StreamConfiguration.builder()
+                .scalingPolicy(ScalingPolicy.fixed(1))
+                .build();
+
+        if (pravegaConfig.createScope() || pravegaConfig.createStream()) {
+            try (final StreamManager streamManager = StreamManager.create(controllerURI)) {
+                if (pravegaConfig.createScope()) {
+                    streamManager.createScope(pravegaConfig.scope());
+                }
+                if (pravegaConfig.createStream()) {
+                    streamManager.createStream(pravegaConfig.scope(), pravegaConfig.stream(), streamConfig);
+                }
+            }
+        }
     }
 
 }
