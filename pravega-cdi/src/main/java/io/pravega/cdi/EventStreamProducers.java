@@ -47,7 +47,7 @@ public class EventStreamProducers {
         EventWriterConfigBuilder writerConfigBuilder = EventWriterConfig.builder();
         if (pravegaConfig != null) {
 //            writerConfigBuilder.initialBackoffMillis(pravegaConfig.initialBackoffMillis());
-            writerConfigBuilder.initalBackoffMillis(pravegaConfig.initialBackoffMillis());
+            writerConfigBuilder.initialBackoffMillis(pravegaConfig.initialBackoffMillis());
             writerConfigBuilder.maxBackoffMillis(pravegaConfig.maxBackoffMillis());
             writerConfigBuilder.retryAttempts(pravegaConfig.retryAttempts());
             writerConfigBuilder.backoffMultiple(pravegaConfig.backoffMultiple());
