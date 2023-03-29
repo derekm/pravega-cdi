@@ -6,9 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.concurrent.ExecutionException;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -38,7 +35,7 @@ public class EventStreamProducersTest {
     static LocalPravegaEmulator localPravega;
 
     @BeforeAll
-    public static void launchPravegaCluster() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void launchPravegaCluster() throws Exception {
         localPravega = LocalPravegaEmulator.builder()
                 .controllerPort(9090)
                 .segmentStorePort(TestUtils.getAvailableListenPort())
@@ -47,9 +44,7 @@ public class EventStreamProducersTest {
                 .enableAuth(false)
                 .enableTls(false)
                 .build();
-        Method startMethod = localPravega.getClass().getDeclaredMethod("start");
-        startMethod.setAccessible(true);
-        startMethod.invoke(localPravega);
+        localPravega.start();
     }
 
     @AfterAll

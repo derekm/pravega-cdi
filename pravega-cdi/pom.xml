@@ -6,6 +6,12 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>pravega-cdi</artifactId>
+  <repositories>
+    <repository>
+      <id>v0.13.0-rc0</id>
+      <url>https://oss.sonatype.org/content/repositories/iopravega-1206</url>
+    </repository>
+  </repositories>
   <dependencies>
     <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
     <dependency>
@@ -25,7 +31,7 @@
     <dependency>
       <groupId>io.pravega</groupId>
       <artifactId>pravega-client</artifactId>
-      <version>0.7.1</version>
+      <version>0.13.0</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.jboss.weld/weld-junit5 -->
@@ -39,14 +45,14 @@
     <dependency>
       <groupId>io.pravega</groupId>
       <artifactId>pravega-standalone</artifactId>
-      <version>0.7.1</version>
+      <version>0.13.0</version>
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/io.pravega/pravega-test-testcommon -->
     <dependency>
       <groupId>io.pravega</groupId>
       <artifactId>pravega-test-testcommon</artifactId>
-      <version>0.7.1</version>
+      <version>0.13.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -54,7 +60,7 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
-      <version>3.6.1</version>
+      <version>3.21.7</version>
       <scope>test</scope>
     </dependency>
 
